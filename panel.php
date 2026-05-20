@@ -1,10 +1,16 @@
 <?php
+require_once 'init.php';
 require_once 'conexion.php';
+
+if(isset($_SESSION['username'])){
+    $usuario=$_SESSION['username'];
+ 
+}
 
 try{
     $stmt = $gbd->prepare('SELECT * FROM usuarios');
     $stmt->execute();
-    $fila = $stmt->fetch(PDO::FETCH_ASSOC);
+
     
 } catch(PDOException $er){
     echo 'error al obtener los datos'. $er->getMessage();
@@ -20,6 +26,7 @@ try{
     <title>Document</title>
 </head>
 <body>
+    <h1>Bienvenido <?php echo $usuario;?></h1>
     <table>
         <thead>
             <td>Perfil</td>
@@ -30,17 +37,28 @@ try{
             <td>Etiquetas</td>
             <td>Menor de edad</td>
         </thead>
-        <tbody>
+     
             <?php
-                while($fila = $stmt->fetch(PDO::FETCH_ASSOC)){
-                    foreach($fila as $user){
+                    while($fila = $stmt->fetch(PDO::FETCH_ASSOC)){
+                        
+                        echo '<thead>
+                    <td><img src="./perfil/'.$fila['id'].'.png"></td>';
+                    echo '
+                    <td>'.$fila['id'].'</td>';
+                    echo '
+                    <td>'.$fila['username'].'</td>';
+                    echo '
+                    <td>'.$fila['nombre'].'</td>';
+                    echo '
+                    <td>'.$fila['fecha_nac'].'</td>';
                         echo '
-                    <td>'.$user['username'].'</td>';
-                    }
+                    <td>'.$fila['es_admin'].'</td></thead>';
                     
-                }
+                    
+                    }
+                
             ?>
-        </tbody>
+        
     </table>
 </body>
 </html>

@@ -1,10 +1,7 @@
 <?php
+require_once 'init.php';
 require_once 'conexion.php';
 
-// if(isset($_SESSION['username'])){
-//     $usuario = $_SESSION['username'];
-//     header('Location:panel.php');
-// }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $usuario= isset($_POST['username']) ? $_POST['username'] : '';
@@ -22,10 +19,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             if(password_verify($password,$hash)){
                 $_SESSION['username']= $usuario;
-                $_SESSION['rol']= $rol;
+                $_SESSION['es_admin']= $rol;
 
                 if($recuerdame){
-                    setcookie('recuerdame', $usuario, time()+(60*60*24*7), '/');
+                    setcookie('recuerdame', $usuario, time()+(60*60*24*30), '/');
                 }
                 header('Location:panel.php');
             } else {
